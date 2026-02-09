@@ -1,63 +1,90 @@
 # Energy Consumption & Efficiency Analysis System
 
-A machine learning project analyzing household energy consumption patterns using regression, classification, and clustering techniques.
+Machine learning analysis of household energy consumption using regression, classification, and clustering techniques.
 
-## 🎯 Project Overview
+## 🎯 Overview
 
-This project analyzes household energy consumption data through four main analytical phases:
-1. **Data Preprocessing** - Cleaning, outlier removal, and feature engineering
-2. **Regression** - Predicting energy consumption with multiple models
-3. **Classification** - Classification energy efficiency based on consumption patterns
-4. **Clustering** - Segmenting households into distinct consumption profiles
+Four-part analysis pipeline:
+1. **Data Preprocessing** - Feature engineering, visualization, outlier removal (IQR method)
+2. **Regression** - Predict energy consumption with multiple models (Linear, Ridge, Lasso, Polynomial, Random Forest)
+3. **Classification** - Binary efficiency classification (Efficient vs Inefficient)
+4. **Clustering** - Segment households into 3 consumption profiles (K-Means, Hierarchical)
 
 ## 📊 Dataset
 
 **File:** `Household energy unit data.csv`
 
-**Main Features:**
-- Energy consumption in kWh (target)
-- Household size, rooms, area
-- Appliances: AC, TV, flat type
-- Urban/rural classification
+**Features:**
+- Target: `units` (energy consumption in kWh)
+- Household: `num_people`, `num_rooms`, `housearea`, `num_children`
+- Appliances: `is_ac`, `is_tv`, `is_flat`, `is_urban`
 
 **Engineered Features:**
-- Energy per person & per square meter
-- Energy density and efficiency ratios
+- `Energy_per_Person` - Energy normalized by household size
+- `Energy_per_SqM` - Energy intensity (efficiency metric)
 
-## 🔧 Models & Techniques
+## 🔧 Analysis Details
 
-**Regression Models:**
-- Linear, Ridge, Lasso, Polynomial Regression
-- Random Forest Regression
-- Metrics: MSE, R², MAE, RMSE
+### Part 1: Preprocessing
+- Consolidates data loading and feature engineering
+- Handles missing values (median/mode imputation)
+- Removes outliers using IQR method (1.5 × threshold)
+- Generates distribution histograms, correlations, and categorical plots
 
-**Classification Models:**
-- Decision Tree, KNN, SVM, Logistic Regression
-- Random Forest Classifier
-- Metrics: Accuracy, F1-Score, ROC-AUC
+### Part 2: Regression
+**Models:** Linear, Ridge, Lasso, Polynomial (degree 2), Random Forest
 
-**Clustering Methods:**
-- K-Means, Hierarchical Clustering, DBSCAN
-- Metrics: Silhouette Score, Davies-Bouldin Index
+**Approach:**
+- SelectKBest feature selection (top 5 features)
+- StandardScaler for numerical data
+- 80/20 train-test split
 
-## 🚀 Quick Start
+**Metrics:** MSE, R², MAE, RMSE, Residual Analysis
+
+### Part 3: Classification
+**Target:** Energy Efficiency (0=Efficient, 1=Inefficient) based on Energy_per_SqM median
+
+**Models:** Decision Tree, KNN, SVM, Logistic Regression, Random Forest
+
+**Evaluation:** Accuracy, F1-Score, ROC-AUC, Confusion Matrix
+
+### Part 4: Clustering
+**Features:** Energy_per_Person, Energy_per_SqM, Total_Energy_kWh
+
+**Methods:** K-Means (k=3) and Hierarchical Clustering (Ward linkage)
+
+**Metrics:** Silhouette Score, Davies-Bouldin Index, PCA visualization
+
+## � Quick Start
 
 ```bash
 # Install dependencies
 pip install pandas numpy scikit-learn matplotlib seaborn scipy
 
-# Run the analysis
+# Run analysis
 jupyter notebook "Energy Consumption & Efficiency Analysis System.ipynb"
 ```
 
-## 📈 Key Results
+**Execution:** Run cells sequentially (Parts 1→2→3→4)
 
-- **Best regression model**: R² > 0.85 (Random Forest)
-- **Cross-validated models**: F1-Scores compared across classifiers
-- **3 household clusters** identified with distinct energy profiles
+## 💡 Key Improvements
+
+- **Reduced redundancy:** Eliminated 4+ duplicate data loads and feature creations
+- **Single preprocessing pipeline:** Reuses `df_clean` across all analyses
+- **Consolidated classification:** Unified 4 scattered sections into 1
+- **Optimized clustering:** Streamlined from 2+ implementations to single best version
+- **Notebook reduced by ~30%** while maintaining full functionality
 
 ## 📁 Files
 
 - `Energy Consumption & Efficiency Analysis System.ipynb` - Main analysis notebook
-- `Household energy unit data.csv` - Dataset
-- `README.md` - This file
+- `Household energy unit data.csv` - Input dataset
+- `README.md` - Documentation
+
+## ⚙️ Technical Notes
+
+- **Random seed:** 42 (reproducibility)
+- **Train-test split:** 80/20 stratified
+- **Scaling:** StandardScaler fitted on training data only
+- **Outlier removal:** IQR method (1.5 × multiplier)
+- **Feature selection:** SelectKBest with f_regression
