@@ -56,13 +56,6 @@ jupyter notebook "Energy Consumption & Efficiency Analysis System.ipynb"
 - **Cross-validated models**: F1-Scores compared across classifiers
 - **3 household clusters** identified with distinct energy profiles
 
-## 👥 Team
-
-- PRN: 123B1B196
-- PRN: 123B1B200
-- PRN: 123B1B212
-- PRN: 124B2B022
-
 ## 📁 Files
 
 - `Energy Consumption & Efficiency Analysis System.ipynb` - Main analysis notebook
